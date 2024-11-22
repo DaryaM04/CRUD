@@ -23,26 +23,28 @@
             </tr>
         </thead>
         <tbody>
+            @foreach ($students as $student) 
         <tr>
-            <th scope="row">1</th>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <th scope="row">{{$loop->iteration}}</th>
+            <td>{{$student->family}}</td>
+            <td>{{$student->name}}</td>
+            <td>{{$student->parentname}}</td>
+            <td>{{$student->dr}}</td>
             <td>
-                <a class="btn btn-primary" href="{{ route('user.show', 1) }}" role="button">Просмотр</a>
+                <a class="btn btn-primary" href="{{ route('user.show', $student->id) }}" role="button">Просмотр</a>
             </td>
             <td>
-                <a class="btn btn-primary" href="{{ route('user.edit', 1) }}" role="button">Изменить</a>
+                <a class="btn btn-primary" href="{{ route('user.edit', $student->id) }}" role="button">Изменить</a>
             </td>
             <td>
-            <form action="{{ route('user.destroy', 1) }}" method="POST">
+            <form action="{{ route('user.destroy', $student->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger" type="submit">Удалить</button>
             </form>
             </td>
         </tr>
+        @endforeach 
     </tbody>
 </table>
 <div class="mt-3">

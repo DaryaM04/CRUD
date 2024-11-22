@@ -14,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $students = UserStudent::all();
+        return view('users.index', compact('students'));
     }
 
     /**
@@ -37,20 +38,19 @@ class UserController extends Controller
             'dr' => 'nullable|date',
             'image' => 'nullable|file',
         ]);
-        dd($data);
         try {
             if (isset($data['image'])) {
-                $data['image'] = Storage::disk('public')->put('/student', $data['image']);
+                $data['image'] = Storage::disk('public')->put('/user', $data['image']);
             }
         
             UserStudent::firstOrCreate($data);
         
-            dd($data);
+            // dd($data);
         } catch (\Exception $exception) {
             abort(404);
         }
         
-        return redirect()->route('student.index');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -58,7 +58,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('users.show');
+        $student = UserStudent::findOrFail($id);
+        return view('users.show', compact('student'));
     }
 
     /**
@@ -66,7 +67,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('users.edit');
+        $student = UserStudent::findOrFail($id);
+        return view('users.edit', compact('student'));
     }
 
     /**
@@ -74,7 +76,31 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dd('Запись обновлена');
+        
+        $data = $request->validate([
+            'family' => 'required|string',
+            'name' => 'required|string',
+            'parentname' => 'required|string',
+            'dr' => 'nullable|date',
+            'image' => 'nullable|file',
+        ]);
+        $student = UserStudent::findOrFail($id);
+        try{
+            if(isset($data['image'])){
+                if($student->image){
+                     Storage::disk('public')->delete($student->image);
+                } 
+                //сохраняем новое изображение 
+                $data['image'] = Storage::disk('public')->put('/user', $data['image']);    
+            }
+            //обновляем данные студента 
+            $student->update($data);;
+            // return redirect()->route('users.show', $student->id);
+            return redirect()->route('user.index');
+        } catch(\Exception $e){
+            //ловим ошибку и возвращаем
+            return back()->withErrors(['error' => 'Не удалось обновить запись.']);
+        }
     }
 
     /**
@@ -82,6 +108,17 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        dd('Запись удалена');
+        $student = UserStudent::findOrFail($id);
+        try{
+            if($student->image && Storage::disk('public')->exists($student->image)){
+                Storage::disk('public')->delete($student->image);
+            }
+            $student->delete();
+        } catch(\Exception $e){
+            abort(404);
+
+        }
+        Storage::disk('public')->delete($student);
+        return redirect()->route('user.index');
     }
 }

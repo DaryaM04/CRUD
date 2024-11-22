@@ -13,5 +13,5 @@ class UserStudent extends Model
     protected $table = 'students';
 
     // Защита от массового заполнения (можно использовать [])
-    protected $guarded = [];
+    protected $guarded = false;
 }
