@@ -20,7 +20,8 @@
                         <h5>Форма для ввода сведений о студенте</h5>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="{{ route('user.store')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="col-12 mb-3">
                                 <label for="family" class="form-label">Фамилия студента:</label>
                                 <input type="text" name="family" class="form-control" placeholder="Введите фамилию">
@@ -39,7 +40,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="input-group">
-                                    <input type="file" class="form-control" accept="image/png, image/jpeg">
+                                    <input type="file" name="image" class="form-control" accept="image/png, image/jpeg">
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-center">

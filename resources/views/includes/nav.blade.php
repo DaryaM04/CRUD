@@ -9,15 +9,12 @@
                 <li class="nav-item">
                     <a class="nav-link text-gray-300" aria-current="page" href="{{ route('main') }}">Главная</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-gray-300" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Студенты
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link text-gray-300" href="{{ route('user.index') }}">Список</a>
                 </li>
-                    <ul class="dropdown-menu text-">
-                        <li><a class="dropdown-item" href="{{ route('user.index') }}">Список</a></li>
-                        <li><a class="dropdown-item" href="{{ route('user.create') }}">Создать</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link text-gray-300" href="{{ route('user.create') }}">Создать</a>
+                </li>     
             </ul>
         </div>
     </div>

@@ -10,7 +10,7 @@ class UserStudent extends Model
     use HasFactory;
 
     // Имя таблицы в базе данных
-    protected $table = 'Таблица';
+    protected $table = 'students';
 
     // Защита от массового заполнения (можно использовать [])
     protected $guarded = [];

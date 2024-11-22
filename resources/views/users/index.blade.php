@@ -36,7 +36,11 @@
                 <a class="btn btn-primary" href="{{ route('user.edit', 1) }}" role="button">Изменить</a>
             </td>
             <td>
-                <a class="btn btn-danger" href="#" role="button">Удалить</a>
+            <form action="{{ route('user.destroy', 1) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">Удалить</button>
+            </form>
             </td>
         </tr>
     </tbody>

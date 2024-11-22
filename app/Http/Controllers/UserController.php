@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\UserStudent;
 
 class UserController extends Controller
 {
@@ -27,7 +30,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'family' => 'required|string',
+            'name' => 'required|string',
+            'parentname' => 'required|string',
+            'dr' => 'nullable|date',
+            'image' => 'nullable|file',
+        ]);
+        dd($data);
+        try {
+            if (isset($data['image'])) {
+                $data['image'] = Storage::disk('public')->put('/student', $data['image']);
+            }
+        
+            UserStudent::firstOrCreate($data);
+        
+            dd($data);
+        } catch (\Exception $exception) {
+            abort(404);
+        }
+        
+        return redirect()->route('student.index');
     }
 
     /**
@@ -51,7 +74,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd('Запись обновлена');
     }
 
     /**
@@ -59,6 +82,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        dd('Запись удалена');
     }
 }
