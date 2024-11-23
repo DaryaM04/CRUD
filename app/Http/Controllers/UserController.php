@@ -32,11 +32,18 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'family' => 'required|string',
-            'name' => 'required|string',
-            'parentname' => 'required|string',
+            'family' => 'required|alpha',
+            'name' => 'required|alpha',
+            'parentname' => 'required|alpha',
             'dr' => 'nullable|date',
             'image' => 'nullable|file',
+        ], [
+            'family.required' => 'Поле "Фамилия" обязательно для заполнения',
+            'name.required' => 'Поле "Имя" обязательно для заполнения',
+            'parentname.required' => 'Поле "Отчество" обязательна для заполнения',
+            'family.alpha' => 'Данное поле не может содержать числа',
+            'name.alpha' => 'Данное поле не может содержать числа',
+            'parentname.alpha' => 'Данное поле не может содержать числа',
         ]);
         try {
             if (isset($data['image'])) {
@@ -78,20 +85,30 @@ class UserController extends Controller
     {
         
         $data = $request->validate([
-            'family' => 'required|string',
-            'name' => 'required|string',
-            'parentname' => 'required|string',
+            'family' => 'required|alpha',
+            'name' => 'required|alpha',
+            'parentname' => 'required|alpha',
             'dr' => 'nullable|date',
             'image' => 'nullable|file',
+        ],[
+            'family.required' => 'Поле "Фамилия" обязательно для заполнения',
+            'name.required' => 'Поле "Имя" обязательно для заполнения',
+            'parentname.required' => 'Поле "Отчество" обязательна для заполнения',
+            'family.alpha' => 'Данное поле не может содержать числа',
+            'name.alpha' => 'Данное поле не может содержать числа',
+            'parentname.alpha' => 'Данное поле не может содержать числа',
         ]);
         $student = UserStudent::findOrFail($id);
         try{
             if(isset($data['image'])){
                 if($student->image){
                      Storage::disk('public')->delete($student->image);
-                } 
+                     $data['image'] = Storage::disk('public')->put('/user', $data['image']);  
+                } else {
+                    $data['image'] = Storage::disk('public')->put('/user', $data['image']);    
+                }
                 //сохраняем новое изображение 
-                $data['image'] = Storage::disk('public')->put('/user', $data['image']);    
+                // $data['image'] = Storage::disk('public')->put('/user', $data['image']);    
             }
             //обновляем данные студента 
             $student->update($data);;

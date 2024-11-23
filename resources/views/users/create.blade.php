@@ -24,15 +24,30 @@
                             @csrf
                             <div class="col-12 mb-3">
                                 <label for="family" class="form-label">Фамилия студента:</label>
-                                <input type="text" name="family" class="form-control" placeholder="Введите фамилию">
+                                <input type="text" name="family" class="form-control @error('family') is-invalid @enderror" placeholder="Введите фамилию" value="{{old('family')}}">
+                                @error('family')
+                                    <span class="error-message" role="alert">
+                                        <strong>{{$message}}</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="name" class="form-label">Имя студента:</label>
-                                <input type="text" name="name" class="form-control" placeholder="Введите имя">
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Введите имя" value="{{old('name')}}">
+                                @error('name')
+                                    <span class="error-message" role="alert">
+                                        <strong>{{$message}}</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="parentname" class="form-label">Отчество студента:</label>
-                                <input type="text" name="parentname" class="form-control" placeholder="Введите отчество">
+                                <input type="text" name="parentname" class="form-control @error('parentname') is-invalid @enderror" placeholder="Введите отчество" value="{{old('parentname')}}">
+                                @error('parentname')
+                                <span class="error-message" role="alert">
+                                    <strong>{{$message}}</strong>
+                                </span>
+                                @enderror
                             </div>
                             <div class="col-12 mb-3">
                                 <label for="dr" class="form-label">Дата рождения:</label>
